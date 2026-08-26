@@ -17,19 +17,19 @@ def call() {
 
             stage('Docker Build') {
                 steps {
-                    sh """
-                        docker build \
-                        -t myrepo/${params.APP_NAME}:${params.DOCKER_TAG} .
-                    """
+                    // sh """
+                    //     docker build \
+                    //     -t myrepo/${params.APP_NAME}:${params.DOCKER_TAG} .
+                    // """
                 }
             }
 
             stage('Docker Push') {
                 steps {
-                    sh """
-                        docker push \
-                        myrepo/${params.APP_NAME}:${params.DOCKER_TAG}
-                    """
+                    // sh """
+                    //     docker push \
+                    //     myrepo/${params.APP_NAME}:${params.DOCKER_TAG}
+                    // """
                 }
             }
 
