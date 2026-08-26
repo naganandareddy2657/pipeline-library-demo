@@ -1,4 +1,8 @@
-def call() {
+def call(Map config = [:]) {
+
+    def applicationName = config.applicationName
+    def dockerImage = config.dockerImage
+    def deployEnvironment = config.deployEnvironment
 
     pipeline {
 
@@ -6,28 +10,23 @@ def call() {
 
         stages {
 
-            stage('Checkout') {
-                steps {
-                    echo 'Checking out application code...'
-                    checkout scm
-                }
-            }
-
             stage('Build') {
                 steps {
-                    echo 'Building application...'
+                    echo "Building ${applicationName}"
                     sh 'mvn clean package'
                 }
             }
-        }
 
-        post {
-            success {
-                echo 'CI/CD Pipeline completed successfully'
+            stage('Docker Build') {
+                steps {
+                    sh "docker build -t ${dockerImage}:${BUILD_NUMBER} ."
+                }
             }
 
-            failure {
-                echo 'CI/CD Pipeline failed'
+            stage('Deploy') {
+                steps {
+                    echo "Deploying ${applicationName} to ${deployEnvironment}"
+                }
             }
         }
     }
