@@ -21,6 +21,7 @@ def call() {
                     //     docker build \
                     //     -t myrepo/${params.APP_NAME}:${params.DOCKER_TAG} .
                     // """
+                    sh 'echo "Skip build part" '
                 }
             }
 
@@ -30,6 +31,7 @@ def call() {
                     //     docker push \
                     //     myrepo/${params.APP_NAME}:${params.DOCKER_TAG}
                     // """
+                    sh 'echo "Skip Push part" '
                 }
             }
 
