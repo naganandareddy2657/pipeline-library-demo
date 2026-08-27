@@ -50,19 +50,24 @@ def call(Map config = [:]) {
 
         if (deploy) {
 
-            echo "Deploying ${appName}"
-            echo "Environment: ${environment}"
-            echo "Docker Image: ${dockerImage}:${dockerTag}"
+            echo "Deploying ${dockerImage}:${dockerTag} on EC2"
 
-            sh """
-                echo "Deployment started"
-                echo "Application : ${appName}"
-                echo "Environment : ${environment}"
-                echo "Image       : ${dockerImage}:${dockerTag}"
+    sh """
+        # Stop and remove existing container if it exists
+        docker rm -f ${appName} 2>/dev/null || true
 
-                # Add your actual deployment command here
-                # ./deploy.sh ${environment} ${dockerImage}:${dockerTag}
-            """
+        # Pull latest image from Docker Hub
+        docker pull ${dockerImage}:${dockerTag}
+
+        # Run new container
+        docker run -d \
+            --name ${appName} \
+            -p 9090:8080 \
+            ${dockerImage}:${dockerTag}
+
+        # Show running container
+        docker ps
+    """
 
         } else {
 
